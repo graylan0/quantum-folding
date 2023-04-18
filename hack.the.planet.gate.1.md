@@ -4,11 +4,11 @@ from qiskit import QuantumCircuit, QuantumRegister, ClassicalRegister, transpile
 def apply_folding_mechanic(qc, num_folds):
     # Add additional qubits for each fold
     for i in range(num_folds):
-        qc.add_register(QuantumRegister(2, f'q{i+1}'))  # Use a unique name for each register
+        new_qubits = QuantumRegister(2, f'q{i+1}')
+        qc.add_register(new_qubits)
         # Apply controlled rotation gates to create entanglement
-        qc.crz(0.5, 2*i, 2*i+2)
-        qc.crz(0.5, 2*i+1, 2*i+3)
-    return qc
+        qc.crz(0.5, qc.qubits[2*i], new_qubits[0])
+        qc.crz(0.5, qc.qubits[2*i+1], new_qubits[1])
 
 def bit_flip_error_correction(qc):
     # Define registers
